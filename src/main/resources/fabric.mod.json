@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "createextra",
+  "id": "astral_bridge",
   "version": "${version}",
-  "name": "Create Extra",
+  "name": "Astral Bridge",
   "description": "Funni things to make Jerry's life a lil bit easier.",
   "authors": [
     "JerryLu086"
@@ -12,11 +12,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.jerrylu086.createextra.CreateExtra"
+      "com.jerrylu086.astral_bridge.AstralBridge"
     ]
   },
   "mixins": [
-    "createextra.mixins.json"
+    "astral_bridge.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
