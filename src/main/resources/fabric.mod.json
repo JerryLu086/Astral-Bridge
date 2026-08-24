@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "astral_bridge",
-  "version": "${version}",
+  "version": "${minecraft_version}-${version}",
   "name": "Astral Bridge",
   "description": "Funni things to make Jerry's life a lil bit easier.",
   "authors": [
