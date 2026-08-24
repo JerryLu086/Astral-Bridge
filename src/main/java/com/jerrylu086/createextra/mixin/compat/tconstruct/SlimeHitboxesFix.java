@@ -18,9 +18,9 @@ public abstract class SlimeHitboxesFix {
     private void dimFix(CallbackInfoReturnable<EntityDimensions> cir) {
         EntityType self = (EntityType)(Object) this;
         if (self == TinkerWorld.earthSlimeEntity.get() ||
-                self == TinkerWorld.skySlimeEntity.get() ||
-                self == TinkerWorld.enderSlimeEntity.get() ||
-                self == TinkerWorld.terracubeEntity.get()) {
+            self == TinkerWorld.skySlimeEntity.get()   ||
+            self == TinkerWorld.enderSlimeEntity.get() ||
+            self == TinkerWorld.terracubeEntity.get()) {
             cir.setReturnValue(this.scaledDim);
         }
     }

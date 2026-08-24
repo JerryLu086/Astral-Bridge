@@ -19,7 +19,8 @@ public abstract class AbstractContraptionEntityMixin {
     @Shadow
     protected Contraption contraption;
 
-    @Redirect(method = "positionRider", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/actors/seat/SeatEntity;getCustomEntitySeatOffset(Lnet/minecraft/world/entity/Entity;)D"))
+    // method_24201 / positionRider(Entity passenger, MoveFunction callback) I do not understand
+    @Redirect(method = "method_24201", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/actors/seat/SeatEntity;getCustomEntitySeatOffset(Lnet/minecraft/world/entity/Entity;)D"))
     private double onPositionRider(Entity entity) {
         BlockPos localPos = this.contraption.getSeatOf(entity.getUUID());
         if (this.contraption != null && this.contraption.getBlocks().containsKey(localPos)) {

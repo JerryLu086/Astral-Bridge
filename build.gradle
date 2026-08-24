@@ -61,10 +61,10 @@ dependencies {
 
     // Ad Astra
     modImplementation("maven.modrinth:ad-astra:${ad_astra_version}")
-    modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+    modImplementation("teamreborn:energy:${teamreborn_energy_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modLocalRuntime("teamreborn:energy:${teamreborn_energy_version}") {
+    modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 }
@@ -93,7 +93,8 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+    // The newer versions
+	it.options.release = 17
 }
 
 java {
