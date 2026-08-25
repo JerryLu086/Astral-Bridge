@@ -20,7 +20,8 @@ public abstract class AbstractContraptionEntityMixin {
     @Shadow
     protected Contraption contraption;
 
-    @WrapOperation(method = "positionRider",
+    // Specifying both named and intermediary because we don't want refmap, as it fixes this but breaks others, and Tiny Remapper has some trouble finding this.
+    @WrapOperation(method = { "positionRider", "method_24201" },
                    at = @At(value = "INVOKE",
                             target = "Lcom/simibubi/create/content/contraptions/actors/seat/SeatEntity;getCustomEntitySeatOffset(Lnet/minecraft/world/entity/Entity;)D"))
     private double onPositionRider(Entity entity, Operation<Double> original) {
