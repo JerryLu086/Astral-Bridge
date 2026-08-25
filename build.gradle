@@ -76,7 +76,7 @@ dependencies {
 configurations.all {
     resolutionStrategy {
         force("net.fabricmc:fabric-loader:${fabric_loader_version}")
-        force("io.github.fabricators_of_create:porting_lib:${porting_lib_version}")
+        force("io.github.fabricators_of_create:Porting-Lib:${porting_lib_version}")
     }
 }
 

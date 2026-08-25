@@ -12,8 +12,6 @@
     "compat.another_furniture.BlockMovementChecksMixin",
     "compat.another_furniture.ContraptionMixin",
     "compat.createaddition.LiquidBurnerStrawFix",
-    "compat.mantle.ConnectedModelAccessor",
-    "compat.mantle.ConnectedModelMixin",
     "compat.tconstruct.SlimeHitboxesFix"
   ],
   "client": [
