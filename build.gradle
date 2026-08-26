@@ -8,21 +8,18 @@ version = mod_version
 group = maven_group
 
 repositories {
-    maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
-    maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
+    maven { url = "https://maven.shedaniel.me/" } // Cloth Config
     maven { url = "https://maven.parchmentmc.org" } // Parchment Mappings
-    maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, Trinkets
-    maven { url = "https://mvn.devos.one/snapshots/" } // Create, Porting Lib, Forge Tags, Milk Lib, Registrate
-    maven { url = "https://cursemaven.com" } // Forge Config API Port
+    maven { url = "https://mvn.devos.one/snapshots/" } // Create, Porting Lib, Forge Tags, Milk Lib, Registrate, Hephaestus, Mantle
+    maven { url = "https://maven.wispforest.io/releases/" } // Star Fluid
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
     maven { url = "https://modmaven.dev" } // Flywheel
     maven { url = "https://maven.ladysnake.org/releases" } // Trinkets
     maven { url = "https://api.modrinth.com/maven" } // Ad Astra, CC&A
-    maven { url = "https://maven.wispforest.io/releases/" } // Star Fluid
 }
 
 dependencies {
@@ -55,13 +52,16 @@ dependencies {
     // Hephaestus
 	modImplementation("slimeknights.tconstruct:Hephaestus:${minecraft_version}-${hephaestus_version}") {
 		// Nope get out
-		exclude(group: "mcjty.theoneprobe")
-		exclude(group: "me.alphamode")
+        exclude(group: "me.alphamode")
+        exclude(group: "curse.maven")
+        exclude(group: "mcjty.theoneprobe")
 	}
 	modImplementation("slimeknights.mantle:Mantle:${minecraft_version}-${mantle_version}") {
 		exclude(group: "me.alphamode")
+        exclude(group: "curse.maven")
 	}
-    modLocalRuntime("me.alphamode:Star:${star_version}+${minecraft_version}")
+    modImplementation("me.alphamode:Star:${star_version}+${minecraft_version}")
+    modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
     // Ad Astra
     modImplementation("maven.modrinth:ad-astra:${ad_astra_version}")
