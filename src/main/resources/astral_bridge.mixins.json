@@ -15,6 +15,7 @@
     "compat.tconstruct.SlimeHitboxesFix"
   ],
   "client": [
+    "ShaderIDFix",
     "client.GoggleTrinketRendererMixin"
   ],
   "plugin": "com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin",
