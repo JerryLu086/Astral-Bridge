@@ -1,5 +1,6 @@
-package com.jerrylu086.astral_bridge.mixin.compat.another_furniture;
+package com.jerrylu086.astral_bridge.mixin.compat.common.another_furniture;
 
+import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -25,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import javax.annotation.Nullable;
 import java.util.*;
 
-@SuppressWarnings("unused")
+@RequiredMod({"another_furniture", "create"})
 @Mixin(Contraption.class)
 public abstract class ContraptionMixin {
     @Shadow

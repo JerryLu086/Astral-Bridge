@@ -21,7 +21,11 @@
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_api_version}",
-    "create": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "suggests": {
+    "create": ">=${create_version}",
+    "ad_astra": ">=${ad_astra_version}",
+    "tconstruct": ">=${hephaestus_version}"
   }
 }

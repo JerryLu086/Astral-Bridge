@@ -1,11 +1,17 @@
 package com.jerrylu086.astral_bridge.mixin;
 
 import com.jerrylu086.astral_bridge.AstralBridge;
-import net.fabricmc.loader.api.FabricLoader;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+import org.spongepowered.asm.service.MixinService;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Set;
 
@@ -25,9 +31,28 @@ public class AstralBridgePlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.startsWith(COMPAT_PACKAGE))
-            return FabricLoader.getInstance().isModLoaded(mixinClassName.substring(COMPAT_PACKAGE.length()).split("\\.")[0]);
-
+        // This took me ages to put together and still managed to look god-awful, huh?
+        if (mixinClassName.startsWith(COMPAT_PACKAGE)) {
+            ClassNode clazz;
+            try {
+                clazz = MixinService.getService().getBytecodeProvider().getClassNode(mixinClassName);
+                if (clazz.invisibleAnnotations != null) {
+                    for (AnnotationNode ann : clazz.invisibleAnnotations) {
+                        List<Object> members = ann.values;
+                        if (ann.desc.equals(Type.getDescriptor(RequiredMod.class)) && members != null) {
+                            for (int i = 0; i < members.size(); i += 2) {
+                                if (members.get(i).equals("value") && members.get(i + 1) instanceof List<?> list && !list.isEmpty()) {
+                                    return AstralBridge.checkLoaded((List<String>) list);
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                AstralBridge.LOGGER.info("Skipping mixin that could not be loaded: " + mixinClassName);
+                return false;
+            }
+        }
         return true;
     }
 
@@ -51,4 +76,10 @@ public class AstralBridgePlugin implements IMixinConfigPlugin {
 
     }
 
+    // I can't believe I'm really doing this.
+    @Retention(RetentionPolicy.CLASS)
+    @Target(ElementType.TYPE)
+    public @interface RequiredMod {
+        String[] value();
+    }
 }

@@ -1,7 +1,8 @@
-package com.jerrylu086.astral_bridge.mixin.compat.ad_astra;
+package com.jerrylu086.astral_bridge.mixin.compat.common.ad_astra;
 
 import com.github.alexnijjar.ad_astra.blocks.pipes.AbstractPipeBlock;
 import com.jerrylu086.astral_bridge.compat.ad_astra.AbstractPipeBlockExtension;
+import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@RequiredMod("ad_astra")
 @Mixin(AbstractPipeBlock.class)
 public abstract class AbstractPipeBlockFix extends BaseEntityBlock implements AbstractPipeBlockExtension {
     @Shadow @Final

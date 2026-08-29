@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 // Mostly copied directly from the newer vesions of AF.
-public class AnotherFurnitureCompat {
+public class AnotherFurnitureCreateCompat {
     public static void init() {
         SeatInteractionBehaviour seatInteractionBehaviour = new SeatInteractionBehaviour();
         AllInteractionBehaviours.registerBehaviourProvider(state -> {

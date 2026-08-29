@@ -1,11 +1,13 @@
-package com.jerrylu086.astral_bridge.mixin.client;
+package com.jerrylu086.astral_bridge.mixin.compat.client;
 
+import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
 import com.simibubi.create.compat.trinkets.GoggleTrinketRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 // Made this because the goggles look quite off when upside down with Created & Updated resource pack.
+@RequiredMod("create")
 @Mixin(GoggleTrinketRenderer.class)
 public abstract class GoggleTrinketRendererMixin {
     @ModifyConstant(method = "render", constant = @Constant(floatValue = 180.0f, ordinal = 1))

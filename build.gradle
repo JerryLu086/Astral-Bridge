@@ -19,6 +19,7 @@ repositories {
     maven { url = "https://maven.ladysnake.org/releases" } // Trinkets
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU, Ad Astra, C:C&A
     maven { url = "https://repo.sleeping.town/" } // EMI
+    flatDir { dirs 'libs' } // Shader ID Dual-Patcher, will be moved onto Modrinth after review.
 }
 
 dependencies {
@@ -33,6 +34,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 
+    modImplementation include(":shader_id_dual_patcher:1.0c")
+
     modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
     modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
@@ -44,10 +47,12 @@ dependencies {
 
     modImplementation("slimeknights.tconstruct:Hephaestus:${hephaestus_version}") {
         exclude(group: "curse.maven")
+        exclude(group: "me.shedaniel")
         exclude(group: "mcjty.theoneprobe")
 	}
     modImplementation("slimeknights.mantle:Mantle:${mantle_version}") {
         exclude(group: "curse.maven")
+        exclude(group: "me.shedaniel")
 	}
 
     modImplementation("maven.modrinth:ad-astra:${ad_astra_version}")
@@ -63,6 +68,8 @@ dependencies {
     modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}")
     modLocalRuntime("dev.emi:emi:${emi_version}")
     modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
+
+    modImplementation include(":shader_id_dual_patcher:1.0c")
 }
 
 configurations.all {
@@ -76,10 +83,12 @@ processResources {
     // Require dependencies to be the version compiled against or newer
     Map<String, String> properties = new HashMap<>()
     properties.put("version", mod_version)
+    properties.put("minecraft_version", minecraft_version)
     properties.put("fabric_loader_version", fabric_loader_version)
     properties.put("fabric_api_version", fabric_api_version)
     properties.put("create_version", create_version)
-    properties.put("minecraft_version", minecraft_version)
+    properties.put("ad_astra_version", ad_astra_version)
+    properties.put("hephaestus_version", hephaestus_version)
 
     properties.forEach((k, v) -> inputs.property(k, v))
 

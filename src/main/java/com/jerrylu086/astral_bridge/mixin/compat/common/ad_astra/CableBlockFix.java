@@ -1,6 +1,7 @@
-package com.jerrylu086.astral_bridge.mixin.compat.ad_astra;
+package com.jerrylu086.astral_bridge.mixin.compat.common.ad_astra;
 
 import com.github.alexnijjar.ad_astra.blocks.pipes.CableBlock;
+import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -15,6 +16,7 @@ import team.reborn.energy.api.EnergyStorage;
 
 import java.util.Map;
 
+@RequiredMod("ad_astra")
 @Mixin(CableBlock.class)
 public abstract class CableBlockFix extends AbstractPipeBlockFix {
     @Shadow @Final

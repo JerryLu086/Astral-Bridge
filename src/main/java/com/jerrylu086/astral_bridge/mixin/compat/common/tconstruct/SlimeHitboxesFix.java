@@ -1,5 +1,6 @@
-package com.jerrylu086.astral_bridge.mixin.compat.tconstruct;
+package com.jerrylu086.astral_bridge.mixin.compat.common.tconstruct;
 
+import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import slimeknights.tconstruct.world.TinkerWorld;
 
+@RequiredMod({"tconstruct"})
 @Mixin(EntityType.class)
 public abstract class SlimeHitboxesFix {
     @Unique
