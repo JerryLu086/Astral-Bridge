@@ -1,6 +1,6 @@
 package com.jerrylu086.astral_bridge.mixin.compat.common.another_furniture;
 
-import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
+import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@RequiredMod({"another_furniture", "create"})
+@RequiresModList({"another_furniture", "create"})
 @Mixin(AbstractContraptionEntity.class)
 public abstract class AbstractContraptionEntityMixin {
     @Shadow

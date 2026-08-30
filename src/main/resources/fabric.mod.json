@@ -1,31 +1,34 @@
 {
   "schemaVersion": 1,
-  "id": "astral_bridge",
-  "version": "${minecraft_version}-${version}",
-  "name": "Astral Bridge",
-  "description": "Funni things to make Jerry's life a lil bit easier.",
+  "id": "${mod_id}",
+  "version": "${mc_version}-${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
-    "JerryLu086"
+    "${mod_authors}"
   ],
-  "license": "MIT License",
+  "license": "${mod_license}",
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.jerrylu086.astral_bridge.AstralBridge"
+      "${mod_group}.${mod_id}.${mod_main_class}"
+    ],
+    "fabric-datagen": [
+      "${mod_group}.${mod_id}.${mod_main_class}Datagen"
     ]
   },
   "mixins": [
-    "astral_bridge.mixins.json"
+    "${mod_id}.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${fabric_loader_version}",
+    "fabricloader": "*",
     "fabric-api": ">=${fabric_api_version}",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${mc_version}"
   },
   "suggests": {
     "create": ">=${create_version}",
-    "ad_astra": ">=${ad_astra_version}",
-    "tconstruct": ">=${hephaestus_version}"
+    "tconstruct": ">=${hephaestus_version}",
+    "ad_astra": ">=${ad_astra_version}"
   }
 }

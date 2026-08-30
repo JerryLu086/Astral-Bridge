@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.jerrylu086.astral_bridge.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
     "compat.common.ad_astra.AbstractPipeBlockFix",
     "compat.common.ad_astra.BacktankUtilMixin",
@@ -17,7 +17,7 @@
   "client": [
     "compat.client.GoggleTrinketRendererMixin"
   ],
-  "plugin": "com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin",
+  "plugin": "com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }

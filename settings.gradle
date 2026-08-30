@@ -10,4 +10,4 @@ pluginManagement {
 }
 
 // Should match your modid
-rootProject.name = "astral_bridge"
+rootProject.name = mod_id

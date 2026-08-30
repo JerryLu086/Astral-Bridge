@@ -1,7 +1,7 @@
 package com.jerrylu086.astral_bridge.mixin.compat.common.ad_astra;
 
 import com.github.alexnijjar.ad_astra.items.armour.SpaceSuit;
-import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
+import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.simibubi.create.content.equipment.armor.BacktankUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
-@RequiredMod({"ad_astra", "create"})
+@RequiresModList({"ad_astra", "create"})
 @Mixin(BacktankUtil.class)
 public abstract class BacktankUtilMixin {
     @Inject(method = "getAir", at = @At("HEAD"), cancellable = true)

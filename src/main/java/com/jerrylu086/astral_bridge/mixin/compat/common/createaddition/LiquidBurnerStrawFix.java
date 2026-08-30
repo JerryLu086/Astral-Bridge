@@ -1,6 +1,6 @@
 package com.jerrylu086.astral_bridge.mixin.compat.common.createaddition;
 
-import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
+import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.mrh0.createaddition.blocks.liquid_blaze_burner.LiquidBlazeBurnerTileEntity;
 import com.mrh0.createaddition.index.CAItems;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 
-@RequiredMod({"create", "createaddition"})
+@RequiresModList({"create", "createaddition"})
 @Mixin(LiquidBlazeBurnerTileEntity.class)
 public abstract class LiquidBurnerStrawFix extends SmartBlockEntity {
     public LiquidBurnerStrawFix(BlockEntityType<?> type, BlockPos pos, BlockState state) {

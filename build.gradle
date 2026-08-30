@@ -1,44 +1,153 @@
 plugins {
-	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
-	id 'maven-publish'
+    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+    id 'maven-publish'
 }
 
-base.archivesName = archive_base_name
-version = mod_version
-group = maven_group
+version = "${mc_version}-${mod_version}"
+group = "${mod_group}.${mod_id}"
+
+base {
+    archivesName = archives_base_name
+}
+
+// No datagen in the .jar file, I'm supa smart yay (call me a thief but I just copied all this from my beloved NHA)
+sourceSets {
+    main {
+        resources {
+            exclude ".cache"
+            srcDirs += "src/main/generated"
+        }
+    }
+    datagen {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+
+loom {
+    runs {
+        datagen {
+            client()
+
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+            runDir "build/datagen"
+
+            source sourceSets.datagen
+        }
+    }
+}
+
+runDatagen {
+    // Doesn't re-run the task when its up-to date
+    outputs.dir('src/main/generated')
+}
 
 repositories {
-    maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
-    maven { url = "https://maven.parchmentmc.org" } // Parchment Mappings
-    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, Trinkets
-    maven { url = "https://mvn.devos.one/snapshots/" } // Create, Porting Lib, Forge Tags, Milk Lib, Registrate, Hephaestus, Mantle
-    maven { url = "https://maven.wispforest.io/releases/" } // Star Fluid
-    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
-    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
-    maven { url = "https://modmaven.dev" } // Flywheel
-    maven { url = "https://maven.ladysnake.org/releases" } // Trinkets
-    maven { url = "https://api.modrinth.com/maven" } // LazyDFU, Ad Astra, C:C&A
-    maven { url = "https://repo.sleeping.town/" } // EMI
-    flatDir { dirs 'libs' } // Shader ID Dual-Patcher, will be moved onto Modrinth after review.
+    maven {
+        // Parchment Mappings
+        url = "https://maven.parchmentmc.org"
+    }
+    maven {
+        url = "https://mvn.devos.one/snapshots/"
+        content {
+            [
+                "com.simibubi.create", // Create
+                "com.tterrag.registrate_fabric", // Registrate
+                "io.github.fabricators_of_create", // Porting Lib
+                "io.github.tropheusj", // Milk Lib, Dripstone Fluid Lib, Serialization Hooks
+                "me.alphamode", // Forge Tags
+                "slimeknights.tconstruct", // Hephaestus
+                "slimeknights.mantle", // Mantle
+            ].each { includeGroup(it) }
+        }
+    }
+    maven {
+        url = "https://modmaven.dev"
+        content {
+            includeGroup "com.jozufozu.flywheel" // Flywheel
+        }
+    }
+    maven {
+        url = "https://maven.wispforest.io/releases/"
+        content {
+            includeGroup "me.alphamode" // Star Fluid
+        }
+    }
+    maven {
+        url = "https://maven.shedaniel.me/"
+        content {
+            [
+                "dev.architectury", // Architectury
+                "me.shedaniel.cloth", // Cloth Config
+                "me.shedaniel", // REI
+            ].each { includeGroup(it) }
+        }
+    }
+    maven {
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        content {
+            includeGroup "net.minecraftforge" // Forge Config API Port
+        }
+    }
+    maven {
+        url = "https://maven.ladysnake.org/releases"
+        content {
+            [
+                "com.github.Chocohead", // Fabric ASM
+                "com.github.LlamaLad7", // Mixin Extras
+                "dev.onyxstudios.cardinal-components-api", // Cardinal Components
+                "io.github.ladysnake", // Satin
+                "com.github.AlphaMode", // Fake Config
+            ].each { includeGroup(it) }
+        }
+    }
+    maven {
+        url = "https://maven.jamieswhiteshirt.com/libs-release"
+        content {
+            includeGroup "com.jamieswhiteshirt" // Reach Entity Attributes
+        }
+    }
+    maven {
+        url = "https://maven.terraformersmc.com/releases/"
+        content {
+            [
+                "dev.emi", // Trinkets, EMI
+                "com.terraformersmc", // Mod Menu
+            ].each { includeGroup(it) }
+        }
+    }
+    maven {
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth" // LazyDFU, Ad Astra, C:C&A
+        }
+    }
+    flatDir {
+        // Shader ID Dual-Patcher, will be moved onto Modrinth after review.
+        dirs 'libs'
+    }
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${minecraft_version}"
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${mc_version}"
     mappings(loom.layered {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${mc_version}:${parchment_version}@zip")
     })
-    modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
+    modImplementation("net.fabricmc:fabric-loader:${loader_version}")
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
+    // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
-
-    modImplementation include(":shader_id_dual_patcher:1.0c")
 
     modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
-    modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
+    modImplementation("com.simibubi.create:create-fabric-${mc_version}:${create_version}")
     modImplementation("maven.modrinth:createaddition:${ccaa_version}")
 
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")
@@ -46,22 +155,15 @@ dependencies {
     modImplementation("maven.modrinth:another-furniture:${another_furniture_version}")
 
     modImplementation("slimeknights.tconstruct:Hephaestus:${hephaestus_version}") {
-        exclude(group: "curse.maven")
-        exclude(group: "me.shedaniel")
-        exclude(group: "mcjty.theoneprobe")
-	}
-    modImplementation("slimeknights.mantle:Mantle:${mantle_version}") {
-        exclude(group: "curse.maven")
-        exclude(group: "me.shedaniel")
-	}
+        exclude(group : "curse.maven")
+        exclude(group : "me.shedaniel")
+        exclude(group : "mezz.jei")
+        exclude(group : "mcjty.theoneprobe")
+    }
 
     modImplementation("maven.modrinth:ad-astra:${ad_astra_version}")
-    modImplementation("teamreborn:energy:${teamreborn_energy_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
+    modImplementation("teamreborn:energy:${teamreborn_energy_version}")
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}")
 
     // QoL
     modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
@@ -69,71 +171,73 @@ dependencies {
     modLocalRuntime("dev.emi:emi:${emi_version}")
     modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
 
-    modImplementation include(":shader_id_dual_patcher:1.0c")
+    modImplementation include(":shader_id_dual_patcher-fabric:1.18.2-1.0")
 }
 
 configurations.all {
     resolutionStrategy {
-        force("net.fabricmc:fabric-loader:${fabric_loader_version}")
+        force("net.fabricmc:fabric-loader:${loader_version}")
         force("io.github.fabricators_of_create:Porting-Lib:${porting_lib_version}")
     }
 }
 
 processResources {
-    // Require dependencies to be the version compiled against or newer
-    Map<String, String> properties = new HashMap<>()
-    properties.put("version", mod_version)
-    properties.put("minecraft_version", minecraft_version)
-    properties.put("fabric_loader_version", fabric_loader_version)
-    properties.put("fabric_api_version", fabric_api_version)
-    properties.put("create_version", create_version)
-    properties.put("ad_astra_version", ad_astra_version)
-    properties.put("hephaestus_version", hephaestus_version)
+    // Stolen from NeoForge ModDevGradle
+    var replaceProperties = [
+            mc_version         : mc_version,
+            java_version       : java_version,
+            loader_version     : loader_version,
+            fabric_api_version : fabric_api_version,
+            mod_id             : mod_id,
+            mod_name           : mod_name,
+            mod_version        : mod_version,
+            mod_authors        : mod_authors,
+            mod_license        : mod_license,
+            mod_group          : mod_group,
+            mod_main_class     : mod_main_class,
+            mod_description    : mod_description,
+            mod_homepage       : mod_homepage,
+            mod_sources        : mod_sources,
+            mod_issues         : mod_issues,
+            create_version     : create_version,
+            hephaestus_version : hephaestus_version,
+            ad_astra_version   : ad_astra_version
+    ]
 
-    properties.forEach((k, v) -> inputs.property(k, v))
-
-    filesMatching("fabric.mod.json") {
-        expand properties
+    inputs.properties replaceProperties
+    filesMatching(["fabric.mod.json", "*.mixins.json"]) {
+        expand replaceProperties
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
     // The newer versions
-	it.options.release = 17
+    it.options.release = java_version.toInteger()
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
-}
-
-jar {
-	def projectName = project.name
-	inputs.property "projectName", projectName
-
-	from("LICENSE") {
-		rename { "${it}_$projectName"}
-	}
+    sourceCompatibility = JavaVersion.toVersion(java_version.toInteger())
+    targetCompatibility = JavaVersion.toVersion(java_version.toInteger())
 }
 
 // Configure the maven publication
 publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			from components.java
-		}
-	}
+    publications {
+        create("mavenJava", MavenPublication) {
+            from components.java
+        }
+    }
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
+    }
 }

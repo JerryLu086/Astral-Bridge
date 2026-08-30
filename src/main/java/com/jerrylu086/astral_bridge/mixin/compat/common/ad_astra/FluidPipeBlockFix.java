@@ -2,7 +2,7 @@ package com.jerrylu086.astral_bridge.mixin.compat.common.ad_astra;
 
 import com.github.alexnijjar.ad_astra.blocks.pipes.FluidPipeBlock;
 import com.github.alexnijjar.ad_astra.blocks.pipes.PipeState;
-import com.jerrylu086.astral_bridge.mixin.AstralBridgePlugin.RequiredMod;
+import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 
-@RequiredMod("ad_astra")
+@RequiresModList("ad_astra")
 @Mixin(FluidPipeBlock.class)
 public abstract class FluidPipeBlockFix extends AbstractPipeBlockFix {
     @Shadow
