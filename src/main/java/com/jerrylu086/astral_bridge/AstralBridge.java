@@ -1,5 +1,6 @@
 package com.jerrylu086.astral_bridge;
 
+import com.jerrylu086.astral_bridge.compat.ad_astra.AdAstraCreateCompat;
 import com.jerrylu086.astral_bridge.compat.another_furniture.AnotherFurnitureCreateCompat;
 
 import net.fabricmc.api.ModInitializer;
@@ -15,8 +16,12 @@ public class AstralBridge implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		if (Util.checkLoaded("create", "another_furniture"))
-			AnotherFurnitureCreateCompat.init();
+		if (Util.checkLoaded("create")) {
+            if (Util.checkLoaded("another_furniture"))
+                AnotherFurnitureCreateCompat.register();
+            if (Util.checkLoaded("ad_astra"))
+                AdAstraCreateCompat.register();
+        }
 	}
 
 	public static ResourceLocation id(String path) {

@@ -116,7 +116,7 @@ repositories {
         url = "https://maven.terraformersmc.com/releases/"
         content {
             [
-                "dev.emi", // Trinkets, EMI
+                "dev.emi", // Trinkets
                 "com.terraformersmc", // Mod Menu
             ].each { includeGroup(it) }
         }
@@ -161,6 +161,12 @@ dependencies {
         exclude(group : "mcjty.theoneprobe")
     }
 
+    // Have to add this back despite already JiJ'd in TC. Mantle's Accesswidener seems to not work at all in dev if not directly added.
+    modImplementation("slimeknights.mantle:Mantle:${mantle_version}") {
+        exclude(group: "curse.maven")
+        exclude(group: "me.shedaniel")
+    }
+
     modImplementation("maven.modrinth:ad-astra:${ad_astra_version}")
     modImplementation("teamreborn:energy:${teamreborn_energy_version}")
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}")
@@ -168,7 +174,6 @@ dependencies {
     // QoL
     modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
     modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}")
-    modLocalRuntime("dev.emi:emi:${emi_version}")
     modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
 
     modImplementation include(":shader_id_dual_patcher-fabric:1.18.2-1.0")

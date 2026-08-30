@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public abstract class FluidPipeBlockFix extends AbstractPipeBlockFix {
         super(properties);
     }
 
-    @Unique @Override
+    @Override
     public BlockState getUpdatedShape(BlockState state, BlockAndTintGetter world, BlockPos pos) {
         for (Direction dir : Direction.values()) {
             BlockPos offset = pos.relative(dir);

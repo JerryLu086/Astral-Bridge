@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 // Mostly copied directly from the newer vesions of AF.
 public class AnotherFurnitureCreateCompat {
-    public static void init() {
+    public static void register() {
         SeatInteractionBehaviour seatInteractionBehaviour = new SeatInteractionBehaviour();
         AllInteractionBehaviours.registerBehaviourProvider(state -> {
             if (state.getBlock() instanceof SeatBlock) {

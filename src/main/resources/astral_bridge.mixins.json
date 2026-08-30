@@ -8,10 +8,13 @@
     "compat.common.ad_astra.BacktankUtilMixin",
     "compat.common.ad_astra.CableBlockFix",
     "compat.common.ad_astra.FluidPipeBlockFix",
+    "compat.common.ad_astra.LaunchPadFix",
+    "compat.common.ad_astra.SlidingDoorBlockFix",
     "compat.common.another_furniture.AbstractContraptionEntityMixin",
     "compat.common.another_furniture.BlockMovementChecksMixin",
     "compat.common.another_furniture.ContraptionMixin",
-    "compat.common.createaddition.LiquidBurnerStrawFix",
+    "compat.common.createaddition.EmptyBurnerStrawFix",
+    "compat.common.createaddition.SchematicannonStrawFix",
     "compat.common.tconstruct.SlimeHitboxesFix"
   ],
   "client": [

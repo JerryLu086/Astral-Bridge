@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @RequiresModList({"create", "createaddition"})
 @Mixin(LiquidBlazeBurnerTileEntity.class)
-public abstract class LiquidBurnerStrawFix extends SmartBlockEntity {
-    public LiquidBurnerStrawFix(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+public abstract class SchematicannonStrawFix extends SmartBlockEntity {
+    public SchematicannonStrawFix(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     @Override
-    public final ItemRequirement getRequiredItems(BlockState state) {
+    public ItemRequirement getRequiredItems(BlockState state) {
         return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME, CAItems.STRAW.get());
     }
 }

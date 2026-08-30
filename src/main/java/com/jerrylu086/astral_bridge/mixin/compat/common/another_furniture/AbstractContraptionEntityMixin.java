@@ -28,13 +28,14 @@ public abstract class AbstractContraptionEntityMixin {
                             target = "Lcom/simibubi/create/content/contraptions/actors/seat/SeatEntity;getCustomEntitySeatOffset(Lnet/minecraft/world/entity/Entity;)D"))
     private double onPositionRider(Entity entity, Operation<Double> original) {
         BlockPos localPos = this.contraption.getSeatOf(entity.getUUID());
+        double offset = original.call(entity);
         if (this.contraption != null && this.contraption.getBlocks().containsKey(localPos)) {
             BlockState sittingBlock = this.contraption.getBlocks().get(localPos).state;
             if (sittingBlock.getBlock() instanceof SeatBlock seatBlock) {
-                return seatBlock.seatHeight() - 0.225;
+                return seatBlock.seatHeight() - 0.225 + offset;
             }
         }
-        return original.call(entity);
+        return offset;
     }
 
     @Inject(method = "canCollideWith", at = @At("HEAD"), cancellable = true)
