@@ -15,10 +15,10 @@ public class AdAstraCreateCompat {
                 LocationState loc = state.getValue(LaunchPad.LOCATION);
                 return LocationStateUtil.connectsFrom(loc, dir) ? CheckResult.SUCCESS : CheckResult.PASS;
             }
-            if (block instanceof SlidingDoorBlock) {
+            /*if (block instanceof SlidingDoorBlock) {
                 LocationState loc = state.getValue(LaunchPad.LOCATION);
                 return LocationStateUtil.connectsFrom(loc, dir) ? CheckResult.SUCCESS : CheckResult.PASS;
-            }
+            }*/
 
             return CheckResult.PASS;
         });

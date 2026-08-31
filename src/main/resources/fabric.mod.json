@@ -14,9 +14,6 @@
     "main": [
       "${mod_group}.${mod_id}.${mod_main_class}"
     ],
-    "client": [
-      "${mod_group}.${mod_id}.client.${mod_main_class}Client"
-    ],
     "fabric-datagen": [
       "${mod_group}.${mod_id}.${mod_main_class}Datagen"
     ]

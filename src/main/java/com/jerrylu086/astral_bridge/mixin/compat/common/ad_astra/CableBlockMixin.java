@@ -17,11 +17,11 @@ import java.util.Map;
 
 @RequiresModList("ad_astra")
 @Mixin(CableBlock.class)
-public abstract class CableBlockFix extends AbstractPipeBlockFix {
+public abstract class CableBlockMixin extends AbstractPipeBlockMixin {
     @Shadow @Final
     public static Map<Direction, BooleanProperty> DIRECTIONS;
 
-    protected CableBlockFix(Properties properties) {
+    protected CableBlockMixin(Properties properties) {
         super(properties);
     }
 

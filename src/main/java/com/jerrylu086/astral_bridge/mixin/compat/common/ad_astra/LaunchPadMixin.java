@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @RequiresModList({"ad_astra", "create"})
 @Mixin(LaunchPad.class)
-public abstract class LaunchPadFix implements ITransformableBlock {
+public abstract class LaunchPadMixin implements ITransformableBlock {
     @Shadow @Final
     public static EnumProperty<LocationState> LOCATION;
 

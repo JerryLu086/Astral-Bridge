@@ -19,12 +19,12 @@ import java.util.Map;
 
 @RequiresModList("ad_astra")
 @Mixin(FluidPipeBlock.class)
-public abstract class FluidPipeBlockFix extends AbstractPipeBlockFix {
+public abstract class FluidPipeBlockMixin extends AbstractPipeBlockMixin {
     @Shadow
     @Final
     public static Map<Direction, EnumProperty<PipeState>> DIRECTIONS;
 
-    protected FluidPipeBlockFix(BlockBehaviour.Properties properties) {
+    protected FluidPipeBlockMixin(BlockBehaviour.Properties properties) {
         super(properties);
     }
 

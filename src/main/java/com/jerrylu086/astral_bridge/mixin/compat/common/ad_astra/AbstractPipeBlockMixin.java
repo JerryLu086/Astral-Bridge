@@ -24,11 +24,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @RequiresModList("ad_astra")
 @Mixin(AbstractPipeBlock.class)
-public abstract class AbstractPipeBlockFix extends BaseEntityBlock implements AbstractPipeBlockExtension {
+public abstract class AbstractPipeBlockMixin extends BaseEntityBlock implements AbstractPipeBlockExtension {
     @Shadow @Final
     public static BooleanProperty WATERLOGGED;
 
-    protected AbstractPipeBlockFix(Properties properties) {
+    protected AbstractPipeBlockMixin(Properties properties) {
         super(properties);
     }
 

@@ -7,7 +7,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.List;
 
 @RequiresModList({"ad_astra", "create"})
-@Mixin(BacktankUtil.class)
-public abstract class BacktankUtilMixin {
+@org.spongepowered.asm.mixin.Mixin(BacktankUtil.class)
+public abstract class Mixin {
     @Inject(method = "getAir", at = @At("HEAD"), cancellable = true)
     private static void onGetAir(ItemStack backtank, CallbackInfoReturnable<Float> cir) {
         if (backtank.getItem() instanceof SpaceSuit spaceSuit) {
