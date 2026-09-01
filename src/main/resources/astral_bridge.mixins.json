@@ -6,7 +6,7 @@
   "mixins": [
     "SlimeMixin",
     "compat.common.ad_astra.AbstractPipeBlockMixin",
-    "compat.common.ad_astra.Mixin",
+    "compat.common.ad_astra.BacktankUtilMixin",
     "compat.common.ad_astra.CableBlockMixin",
     "compat.common.ad_astra.FluidPipeBlockMixin",
     "compat.common.ad_astra.LaunchPadMixin",
