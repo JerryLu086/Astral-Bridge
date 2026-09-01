@@ -9,6 +9,18 @@ import net.minecraft.world.level.block.Block;
 
 public class AdAstraCreateCompat {
     public static void register() {
+        BlockMovementChecks.registerMovementAllowedCheck((state, world, pos) -> {
+            Block block = state.getBlock();
+            if (block instanceof LaunchPad) {
+                return CheckResult.SUCCESS;
+            }
+            if (block instanceof SlidingDoorBlock) {
+                return CheckResult.SUCCESS;
+            }
+
+            return CheckResult.PASS;
+        });
+
         BlockMovementChecks.registerAttachedCheck((state, world, pos, dir) -> {
             Block block = state.getBlock();
             if (block instanceof LaunchPad) {

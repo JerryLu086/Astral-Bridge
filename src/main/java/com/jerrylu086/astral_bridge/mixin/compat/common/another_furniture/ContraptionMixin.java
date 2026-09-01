@@ -1,6 +1,7 @@
 package com.jerrylu086.astral_bridge.mixin.compat.common.another_furniture;
 
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -21,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -36,17 +36,17 @@ public abstract class ContraptionMixin {
     @Shadow
     abstract List<BlockPos> getSeats();
 
-    @Inject(method = "moveBlock", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, ordinal = 16), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "moveBlock", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, ordinal = 16))
     private void onMoveBlock(Level world, @Nullable Direction forcedDirection, Queue<BlockPos> frontier,
-                             Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir, BlockPos pos,
-                             BlockState state) throws AssemblyException {
+                             Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir, @Local BlockPos pos,
+                             @Local BlockState state) throws AssemblyException {
         if (state.getBlock() instanceof SeatBlock)
             moveAFSeat(world, pos);
     }
 
-    @Inject(method = "addPassengersToWorld", at = @At(value = "JUMP", opcode = Opcodes.IFNE, ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "addPassengersToWorld", at = @At(value = "JUMP", opcode = Opcodes.IFNE, ordinal = 0))
     private void addPassengersToWorld(Level world, StructureTransform transform, List<Entity> seatedEntities, CallbackInfo ci,
-                                      Iterator itr, Entity seatedEntity, Integer seatIndex, BlockPos seatPos) {
+                                      @Local Entity seatedEntity, @Local BlockPos seatPos) {
         if (!(world.isClientSide) && world.getBlockState(seatPos).getBlock() instanceof SeatBlock seatBlock &&
                 !com.simibubi.create.content.contraptions.actors.seat.SeatBlock.isSeatOccupied(world, seatPos)) {
 

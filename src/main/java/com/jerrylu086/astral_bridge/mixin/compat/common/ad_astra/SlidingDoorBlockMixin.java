@@ -12,8 +12,5 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @RequiresModList("ad_astra")
 @Mixin(SlidingDoorBlock.class)
 public abstract class SlidingDoorBlockMixin {
-    @Inject(method = "getPistonPushReaction", at = @At("HEAD"), cancellable = true)
-    private void onGetPistonPushReaction(BlockState state, CallbackInfoReturnable<PushReaction> cir) {
-        cir.setReturnValue(PushReaction.DESTROY);
-    }
+
 }
