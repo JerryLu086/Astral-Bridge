@@ -12,7 +12,6 @@
     "compat.common.ad_astra.LaunchPadMixin",
     "compat.common.ad_astra.SlidingDoorBlockMixin",
     "compat.common.another_furniture.AbstractContraptionEntityMixin",
-    "compat.common.another_furniture.BlockMovementChecksMixin",
     "compat.common.another_furniture.ContraptionMixin",
     "compat.common.createaddition.EmptyBurnerStrawFix",
     "compat.common.createaddition.SchematicannonStrawFix",

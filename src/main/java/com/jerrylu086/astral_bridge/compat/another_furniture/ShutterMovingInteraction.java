@@ -1,5 +1,6 @@
 package com.jerrylu086.astral_bridge.compat.another_furniture;
 
+import com.mojang.datafixers.util.Pair;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.behaviour.SimpleBlockMovingInteraction;
 import com.starfish_studios.another_furniture.block.ShutterBlock;
@@ -11,51 +12,129 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class ShutterMovingInteraction extends SimpleBlockMovingInteraction {
-
+    @Override
     protected BlockState handle(Player player, Contraption contraption, BlockPos pos, BlockState currentState) {
-        toggleShutters(currentState, pos, currentState.getValue(ShutterBlock.OPEN), contraption);
-        this.playSound(player, currentState.getValue(ShutterBlock.OPEN) ? SoundEvents.WOODEN_TRAPDOOR_OPEN : SoundEvents.WOODEN_TRAPDOOR_CLOSE, 1.0F);
-        return currentState.cycle(ShutterBlock.OPEN);
-    }
+        currentState = currentState.cycle(ShutterBlock.OPEN);
 
-    public void toggleShutters(BlockState state, BlockPos pos, boolean open, Contraption contraption) {
-        open = !open;
+        BlockState origin = currentState;
+        BlockPos currentPos = pos;
+        boolean isolate = player.isShiftKeyDown();
 
-        BlockState updateState = state;
-        BlockPos updatePos = pos;
-        if (state.getValue(ShutterBlock.TYPE) == ShutterType.MIDDLE || state.getValue(ShutterBlock.TYPE) == ShutterType.BOTTOM) {
-            int heightUp = (int) contraption.bounds.maxY - updatePos.getY();
-            for (int i = 0; i < heightUp; i++) {
-                StructureTemplate.StructureBlockInfo above = contraption.getBlocks().get(updatePos.above());
-                if (above != null && above.state.is(state.getBlock()) && above.state.getValue(ShutterBlock.FACING) == updateState.getValue(ShutterBlock.FACING) && above.state.getValue(ShutterBlock.LEFT) == updateState.getValue(ShutterBlock.LEFT) && above.state.getValue(ShutterBlock.OPEN) != open) {
-                    updateState = above.state;
-                    updatePos = updatePos.above();
-                    this.setContraptionBlockData(contraption.entity, updatePos, new StructureTemplate.StructureBlockInfo(above.pos, updateState.setValue(ShutterBlock.OPEN, open), above.nbt));
-                } else {
-                    break;
+        int heightUp = (int) contraption.bounds.maxY - pos.getY();
+        for (int i = 0; i < heightUp; i++) {
+
+            isolate |= currentState.getValue(ShutterBlock.TYPE) == ShutterType.NONE
+                               || currentState.getValue(ShutterBlock.TYPE) == ShutterType.TOP;
+
+            BlockPos offset = currentPos.above();
+            StructureTemplate.StructureBlockInfo neighborInfo = contraption.getBlocks().get(offset);
+            if (neighborInfo != null) {
+                BlockState neighbor = neighborInfo.state;
+                if (neighbor.is(currentState.getBlock())
+                            && neighbor.getValue(ShutterBlock.FACING) == currentState.getValue(ShutterBlock.FACING)
+                            && neighbor.getValue(ShutterBlock.LEFT) == currentState.getValue(ShutterBlock.LEFT)) {
+
+                    if (isolate) {
+
+                        Pair<BlockState, BlockState> updated
+                                = ShutterUtils.updateConnection(currentState.cycle(ShutterBlock.OPEN), currentState, neighbor, true);
+                        currentState = updated.getFirst();
+                        neighbor = updated.getSecond();
+
+                        this.setContraptionBlockData(contraption.entity, offset,
+                                new StructureTemplate.StructureBlockInfo(neighborInfo.pos, neighbor, neighborInfo.nbt));
+
+                        if (i > 0) {
+                            StructureTemplate.StructureBlockInfo currentInfo = contraption.getBlocks().get(currentPos);
+                            this.setContraptionBlockData(contraption.entity, currentPos,
+                                    new StructureTemplate.StructureBlockInfo(currentInfo.pos, currentState, currentInfo.nbt));
+                        } else {
+                            origin = currentState;
+                        }
+
+                        break;
+
+                    } else {
+
+                        currentState = neighbor.cycle(ShutterBlock.OPEN);
+
+                        if (neighbor.getValue(ShutterBlock.TYPE) == ShutterType.TOP
+                                    || neighbor.getValue(ShutterBlock.TYPE) == ShutterType.MIDDLE) {
+                            this.setContraptionBlockData(contraption.entity, offset,
+                                    new StructureTemplate.StructureBlockInfo(neighborInfo.pos, currentState, neighborInfo.nbt));
+                        }
+                    }
                 }
             }
+
+            currentPos = offset;
+
         }
-        if (state.getValue(ShutterBlock.TYPE) == ShutterType.MIDDLE || state.getValue(ShutterBlock.TYPE) == ShutterType.TOP) {
-            updateState = state;
-            updatePos = pos;
-            int heightDown = (int) contraption.bounds.minY - updatePos.getY();
-            heightDown = (heightDown < 0) ? -heightDown : heightDown;
-            for (int i = 0; i < heightDown; i++) {
-                StructureTemplate.StructureBlockInfo below = contraption.getBlocks().get(updatePos.below());
-                if (below != null && below.state.is(state.getBlock()) && below.state.getValue(ShutterBlock.FACING) == updateState.getValue(ShutterBlock.FACING) && below.state.getValue(ShutterBlock.LEFT) == updateState.getValue(ShutterBlock.LEFT) && below.state.getValue(ShutterBlock.OPEN) != open) {
-                    updateState = below.state;
-                    updatePos = updatePos.below();
-                    this.setContraptionBlockData(contraption.entity, updatePos, new StructureTemplate.StructureBlockInfo(below.pos, updateState.setValue(ShutterBlock.OPEN, open), below.nbt));
-                } else {
-                    break;
+
+        currentPos = pos;
+        currentState = origin;
+        isolate = player.isShiftKeyDown();
+
+        int heightDown = (int) contraption.bounds.minY - pos.getY();
+        heightDown = Math.abs(heightDown);
+        for (int i = 0; i < heightDown; i++) {
+
+            isolate |= currentState.getValue(ShutterBlock.TYPE) == ShutterType.NONE
+                               || currentState.getValue(ShutterBlock.TYPE) == ShutterType.BOTTOM;
+
+            BlockPos offset = currentPos.below();
+            StructureTemplate.StructureBlockInfo neighborInfo = contraption.getBlocks().get(offset);
+            if (neighborInfo != null) {
+                BlockState neighbor = neighborInfo.state;
+                if (neighbor.is(currentState.getBlock())
+                            && neighbor.getValue(ShutterBlock.FACING) == currentState.getValue(ShutterBlock.FACING)
+                            && neighbor.getValue(ShutterBlock.LEFT) == currentState.getValue(ShutterBlock.LEFT)) {
+
+                    if (isolate) {
+
+                        Pair<BlockState, BlockState> updated
+                                = ShutterUtils.updateConnection(currentState.cycle(ShutterBlock.OPEN), currentState, neighbor, false);
+                        currentState = updated.getFirst();
+                        neighbor = updated.getSecond();
+
+                        this.setContraptionBlockData(contraption.entity, offset,
+                                new StructureTemplate.StructureBlockInfo(neighborInfo.pos, neighbor, neighborInfo.nbt));
+
+                        if (i > 0) {
+                            StructureTemplate.StructureBlockInfo currentInfo = contraption.getBlocks().get(currentPos);
+                            this.setContraptionBlockData(contraption.entity, currentPos,
+                                    new StructureTemplate.StructureBlockInfo(currentInfo.pos, currentState, currentInfo.nbt));
+                        } else {
+                            origin = currentState;
+                        }
+
+                        break;
+
+                    } else {
+
+                        currentState = neighbor.cycle(ShutterBlock.OPEN);
+
+                        if (neighbor.getValue(ShutterBlock.TYPE) == ShutterType.MIDDLE
+                                    || neighbor.getValue(ShutterBlock.TYPE) == ShutterType.BOTTOM) {
+                            this.setContraptionBlockData(contraption.entity, offset,
+                                    new StructureTemplate.StructureBlockInfo(neighborInfo.pos, currentState, neighborInfo.nbt));
+                        }
+                    }
                 }
             }
+
+            currentPos = offset;
+
         }
+
+        playSound(player, currentState.getValue(ShutterBlock.OPEN) ? SoundEvents.WOODEN_TRAPDOOR_OPEN : SoundEvents.WOODEN_TRAPDOOR_CLOSE,
+                player.level.getRandom().nextFloat() * 0.1F + 0.9F);
+
+        return origin;
     }
 
+    @Override
     protected boolean updateColliders() {
         return true;
     }
-
 }

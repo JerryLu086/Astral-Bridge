@@ -28,14 +28,6 @@ public class AnotherFurnitureCreateCompat {
             return CheckResult.PASS;
         });
 
-        SeatInteractionBehaviour seatInteractionBehaviour = new SeatInteractionBehaviour();
-        AllInteractionBehaviours.registerBehaviourProvider(state -> {
-            if (state.getBlock() instanceof SeatBlock) {
-                return seatInteractionBehaviour;
-            }
-            return null;
-        });
-
         ShutterMovingInteraction shutterMovingInteraction = new ShutterMovingInteraction();
         AllInteractionBehaviours.registerBehaviourProvider(state -> {
             if (state.is(AFBlockTags.SHUTTERS)) {
@@ -44,10 +36,10 @@ public class AnotherFurnitureCreateCompat {
             return null;
         });
 
-        CompatSeatMovementBehaviour seatMovementBehaviour = new CompatSeatMovementBehaviour();
-        AllMovementBehaviours.registerBehaviourProvider(state -> {
+        SeatInteractionBehaviour seatInteractionBehaviour = new SeatInteractionBehaviour();
+        AllInteractionBehaviours.registerBehaviourProvider(state -> {
             if (state.getBlock() instanceof SeatBlock) {
-                return seatMovementBehaviour;
+                return seatInteractionBehaviour;
             }
             return null;
         });
