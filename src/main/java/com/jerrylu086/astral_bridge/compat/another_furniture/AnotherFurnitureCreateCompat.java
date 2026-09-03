@@ -1,10 +1,10 @@
 package com.jerrylu086.astral_bridge.compat.another_furniture;
 
 import com.simibubi.create.AllInteractionBehaviours;
-import com.simibubi.create.AllMovementBehaviours;
 import com.simibubi.create.content.contraptions.BlockMovementChecks;
 import com.simibubi.create.content.contraptions.BlockMovementChecks.CheckResult;
 import com.simibubi.create.content.contraptions.actors.seat.SeatInteractionBehaviour;
+import com.starfish_studios.another_furniture.block.CurtainBlock;
 import com.starfish_studios.another_furniture.block.SeatBlock;
 import com.starfish_studios.another_furniture.block.ShutterBlock;
 import com.starfish_studios.another_furniture.block.properties.ShutterType;
@@ -12,7 +12,6 @@ import com.starfish_studios.another_furniture.registry.AFBlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 
-// Mostly copied directly from the newer vesions of AF.
 public class AnotherFurnitureCreateCompat {
     public static void register() {
         BlockMovementChecks.registerAttachedCheck((state, world, pos, dir) -> {

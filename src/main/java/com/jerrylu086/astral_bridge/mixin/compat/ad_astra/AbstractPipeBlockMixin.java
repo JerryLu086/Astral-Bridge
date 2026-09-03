@@ -1,4 +1,4 @@
-package com.jerrylu086.astral_bridge.mixin.compat.common.ad_astra;
+package com.jerrylu086.astral_bridge.mixin.compat.ad_astra;
 
 import com.github.alexnijjar.ad_astra.blocks.pipes.AbstractPipeBlock;
 import com.jerrylu086.astral_bridge.compat.ad_astra.AbstractPipeBlockExtension;

@@ -1,4 +1,4 @@
-package com.jerrylu086.astral_bridge.mixin.compat.common.another_furniture;
+package com.jerrylu086.astral_bridge.mixin.compat.another_furniture;
 
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

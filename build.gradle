@@ -1,4 +1,6 @@
 plugins {
+    id 'idea'
+    id 'eclipse'
     id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
     id 'maven-publish'
 }
@@ -10,7 +12,20 @@ base {
     archivesName = archives_base_name
 }
 
-// No datagen in the .jar file, I'm supa smart yay (call me a thief but I just copied all this from my beloved NHA)
+idea {
+    module {
+        downloadJavadoc = autoJavadocSources
+        downloadSources = autoJavadocSources
+    }
+}
+
+eclipse {
+    classpath {
+        downloadJavadoc = autoJavadocSources
+        downloadSources = autoJavadocSources
+    }
+}
+
 sourceSets {
     main {
         resources {
@@ -35,16 +50,10 @@ loom {
             vmArg "-Dfabric-api.datagen"
             vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
             vmArg "-Dfabric-api.datagen.modid=${mod_id}"
-            runDir "build/datagen"
 
             source sourceSets.datagen
         }
     }
-}
-
-runDatagen {
-    // Doesn't re-run the task when its up-to date
-    outputs.dir('src/main/generated')
 }
 
 repositories {
@@ -155,10 +164,10 @@ dependencies {
     modImplementation("maven.modrinth:another-furniture:${another_furniture_version}")
 
     modImplementation("slimeknights.tconstruct:Hephaestus:${hephaestus_version}") {
-        exclude(group : "curse.maven")
-        exclude(group : "me.shedaniel")
-        exclude(group : "mezz.jei")
-        exclude(group : "mcjty.theoneprobe")
+        exclude(group: "curse.maven")
+        exclude(group: "me.shedaniel")
+        exclude(group: "mezz.jei")
+        exclude(group: "mcjty.theoneprobe")
     }
 
     // Have to add this back despite already JiJ'd in TC. Mantle's Accesswidener seems to not work at all in dev if not directly added.
@@ -198,13 +207,13 @@ processResources {
             mod_name           : mod_name,
             mod_version        : mod_version,
             mod_authors        : mod_authors,
+            mod_credits        : mod_credits,
             mod_license        : mod_license,
             mod_group          : mod_group,
             mod_main_class     : mod_main_class,
             mod_description    : mod_description,
             mod_homepage       : mod_homepage,
             mod_sources        : mod_sources,
-            mod_issues         : mod_issues,
             create_version     : create_version,
             hephaestus_version : hephaestus_version,
             ad_astra_version   : ad_astra_version

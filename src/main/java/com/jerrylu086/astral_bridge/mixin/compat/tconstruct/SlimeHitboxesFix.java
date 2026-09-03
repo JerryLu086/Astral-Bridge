@@ -1,4 +1,4 @@
-package com.jerrylu086.astral_bridge.mixin.compat.common.tconstruct;
+package com.jerrylu086.astral_bridge.mixin.compat.tconstruct;
 
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import net.minecraft.world.entity.EntityDimensions;

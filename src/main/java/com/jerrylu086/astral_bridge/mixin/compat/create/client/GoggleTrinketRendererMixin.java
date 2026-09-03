@@ -1,4 +1,4 @@
-package com.jerrylu086.astral_bridge.mixin.compat.client;
+package com.jerrylu086.astral_bridge.mixin.compat.create.client;
 
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.simibubi.create.compat.trinkets.GoggleTrinketRenderer;

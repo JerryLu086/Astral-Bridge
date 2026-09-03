@@ -1,4 +1,4 @@
-package com.jerrylu086.astral_bridge.mixin.compat.common.createaddition;
+package com.jerrylu086.astral_bridge.mixin.compat.createaddition;
 
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

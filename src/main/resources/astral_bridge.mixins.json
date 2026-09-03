@@ -4,21 +4,23 @@
   "package": "com.jerrylu086.astral_bridge.mixin",
   "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
-    "SlimeMixin",
-    "compat.common.ad_astra.AbstractPipeBlockMixin",
-    "compat.common.ad_astra.BacktankUtilMixin",
-    "compat.common.ad_astra.CableBlockMixin",
-    "compat.common.ad_astra.FluidPipeBlockMixin",
-    "compat.common.ad_astra.LaunchPadMixin",
-    "compat.common.ad_astra.SlidingDoorBlockMixin",
-    "compat.common.another_furniture.AbstractContraptionEntityMixin",
-    "compat.common.another_furniture.ContraptionMixin",
-    "compat.common.createaddition.EmptyBurnerStrawFix",
-    "compat.common.createaddition.SchematicannonStrawFix",
-    "compat.common.tconstruct.SlimeHitboxesFix"
+    "ModResourcePackUtilMixin",
+    "compat.ad_astra.AbstractPipeBlockMixin",
+    "compat.ad_astra.BacktankUtilMixin",
+    "compat.ad_astra.CableBlockMixin",
+    "compat.ad_astra.ContraptionMixin",
+    "compat.ad_astra.FluidPipeBlockMixin",
+    "compat.ad_astra.LaunchPadFix",
+    "compat.ad_astra.LaunchPadItemRequirement",
+    "compat.ad_astra.SlidingDoorBlockFix",
+    "compat.another_furniture.AbstractContraptionEntityMixin",
+    "compat.another_furniture.ContraptionMixin",
+    "compat.createaddition.EmptyBurnerStrawFix",
+    "compat.createaddition.SchematicannonStrawFix",
+    "compat.tconstruct.SlimeHitboxesFix"
   ],
   "client": [
-    "compat.client.GoggleTrinketRendererMixin"
+    "compat.create.client.GoggleTrinketRendererMixin"
   ],
   "plugin": "com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin",
   "injectors": {

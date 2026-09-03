@@ -37,7 +37,7 @@ public class ShutterMovingInteraction extends SimpleBlockMovingInteraction {
                     if (isolate) {
 
                         Pair<BlockState, BlockState> updated
-                                = ShutterUtils.updateConnection(currentState.cycle(ShutterBlock.OPEN), currentState, neighbor, true);
+                                = ShutterUtil.updateConnection(currentState.cycle(ShutterBlock.OPEN), currentState, neighbor, true);
                         currentState = updated.getFirst();
                         neighbor = updated.getSecond();
 
@@ -93,7 +93,7 @@ public class ShutterMovingInteraction extends SimpleBlockMovingInteraction {
                     if (isolate) {
 
                         Pair<BlockState, BlockState> updated
-                                = ShutterUtils.updateConnection(currentState.cycle(ShutterBlock.OPEN), currentState, neighbor, false);
+                                = ShutterUtil.updateConnection(currentState.cycle(ShutterBlock.OPEN), currentState, neighbor, false);
                         currentState = updated.getFirst();
                         neighbor = updated.getSecond();
 

@@ -5,7 +5,7 @@ import com.starfish_studios.another_furniture.block.ShutterBlock;
 import com.starfish_studios.another_furniture.block.properties.ShutterType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ShutterUtils {
+public class ShutterUtil {
     public static Pair<BlockState, BlockState> updateConnection(BlockState state, BlockState newState, BlockState neighbor, boolean above) {
         if (canConnectTo(state, neighbor) != canConnectTo(newState, neighbor)) {
             newState = cycleConnection(newState, above);

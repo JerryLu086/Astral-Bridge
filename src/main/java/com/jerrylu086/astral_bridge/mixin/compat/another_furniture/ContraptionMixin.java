@@ -1,4 +1,4 @@
-package com.jerrylu086.astral_bridge.mixin.compat.common.another_furniture;
+package com.jerrylu086.astral_bridge.mixin.compat.another_furniture;
 
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -45,7 +45,7 @@ public abstract class ContraptionMixin {
     }
 
     @Inject(method = "addPassengersToWorld", at = @At(value = "JUMP", opcode = Opcodes.IFNE, ordinal = 0))
-    private void addPassengersToWorld(Level world, StructureTransform transform, List<Entity> seatedEntities, CallbackInfo ci,
+    private void onAddPassengersToWorld(Level world, StructureTransform transform, List<Entity> seatedEntities, CallbackInfo ci,
                                       @Local Entity seatedEntity, @Local BlockPos seatPos) {
         if (!(world.isClientSide) && world.getBlockState(seatPos).getBlock() instanceof SeatBlock seatBlock &&
                 !com.simibubi.create.content.contraptions.actors.seat.SeatBlock.isSeatOccupied(world, seatPos)) {
