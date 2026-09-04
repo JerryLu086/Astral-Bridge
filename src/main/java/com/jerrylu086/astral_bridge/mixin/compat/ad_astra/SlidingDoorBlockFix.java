@@ -6,6 +6,7 @@ import com.jerrylu086.astral_bridge.compat.ad_astra.LocationStateUtil;
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -29,17 +30,6 @@ public abstract class SlidingDoorBlockFix extends BaseEntityBlock {
         super(properties);
     }
 
-    @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
-        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
-//                       .setValue(LOCATION, LocationStateUtil.mirror(state.getValue(LOCATION), mirror == Mirror.LEFT_RIGHT ? Axis.Z : Axis.X));
-    }
-
     @WrapOperation(method = "<clinit>",
             at = @At(
                     value = "INVOKE",
@@ -47,5 +37,17 @@ public abstract class SlidingDoorBlockFix extends BaseEntityBlock {
                     ordinal = 0))
     private static EnumProperty<LocationState> assignUniversalProperty(String name, Class<?> clazz, Operation<EnumProperty<?>> original) {
         return LocationStateUtil.LOCATION;
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        state = state.rotate(mirror.getRotation(state.getValue(FACING)));
+        return mirror == Mirror.NONE ? state : state.setValue(LOCATION,
+                LocationStateUtil.mirror(state.getValue(LOCATION), Axis.Y));
     }
 }

@@ -1,5 +1,6 @@
 package com.jerrylu086.astral_bridge.mixin;
 
+import com.jerrylu086.astral_bridge.AstralBridge;
 import net.fabricmc.fabric.api.resource.ModResourcePack;
 import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
 import net.minecraft.server.packs.PackType;
@@ -21,12 +22,16 @@ public abstract class ModResourcePackUtilMixin {
             String id = pack.getFabricModMetadata().getId();
             if (id.equals("ad_astra")) {
                 if (target != null) {
+                    AstralBridge.LOGGER.info("Found AA pack at: {}, now removing and re-adding AB.", i);
                     packs.remove(pack);
-                    packs.add(i, pack);
+                    packs.add(i + 1, pack);
+                } else {
+                    AstralBridge.LOGGER.info("Found AA pack at: {} before AB, now breaking the loop.", i);
                 }
                 break;
             }
             if (id.equals("astral_bridge")) {
+                AstralBridge.LOGGER.info("Found AB pack at: {}, now targeted.", i);
                 target = pack;
             }
         }

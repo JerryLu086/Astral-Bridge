@@ -3,7 +3,6 @@ package com.jerrylu086.astral_bridge.compat.ad_astra;
 import com.github.alexnijjar.ad_astra.blocks.door.LocationState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
@@ -11,15 +10,17 @@ public class LocationStateUtil {
     public static final EnumProperty<LocationState> LOCATION = EnumProperty.create("location", LocationState.class);
 
     public static LocationState rotatePad(LocationState location, Rotation rotation, Axis axis) {
-        double angle = Math.PI / 2 * rotation.ordinal();
-        int x = location.ordinal() % 3 - 1,
+        int angle = rotation.ordinal(),
+            x = location.ordinal() % 3 - 1,
             z = location.ordinal() / 3 - 1,
             xp = x,
             zp = z;
 
         if (axis == Axis.Y) {
-            xp = x * (int) Mth.cos((float) angle) - z * (int) Mth.sin((float) angle);
-            zp = x * (int) Mth.sin((float) angle) + z * (int) Mth.cos((float) angle);
+            int sin = (angle & 1) * (1 - (angle & 2));
+            int cos = ((angle + 1) & 1) * (1 - ((angle + 1) & 2));
+            xp = x * cos - z * sin;
+            zp = x * sin + z * cos;
         } else if (rotation == Rotation.CLOCKWISE_180) {
             xp *= axis == Axis.Z ? -1 : 1;
             zp *= axis == Axis.X ? -1 : 1;

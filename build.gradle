@@ -154,10 +154,10 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 
-    modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}")
-
     modImplementation("com.simibubi.create:create-fabric-${mc_version}:${create_version}")
     modImplementation("maven.modrinth:createaddition:${ccaa_version}")
+
+    modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")
 
