@@ -15,19 +15,19 @@ import java.util.List;
 public abstract class ModResourcePackUtilMixin {
     @Inject(method = "appendModResourcePacks", at = @At("TAIL"))
     private static void onAppend(List<ModResourcePack> packs, PackType type, @Nullable String subPath, CallbackInfo ci) {
-        int target = -1;
+        ModResourcePack target = null;
         for (int i = 0; i < packs.toArray().length; i++) {
             ModResourcePack pack = packs.get(i);
             String id = pack.getFabricModMetadata().getId();
             if (id.equals("ad_astra")) {
-                if (target == -1)
-                    break;
-
-                packs.remove(pack);
-                packs.add(i, pack);
+                if (target != null) {
+                    packs.remove(pack);
+                    packs.add(i, pack);
+                }
+                break;
             }
             if (id.equals("astral_bridge")) {
-                target = i;
+                target = pack;
             }
         }
     }

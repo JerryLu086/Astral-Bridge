@@ -109,6 +109,7 @@ public abstract class LaunchPadFix extends Block {
 
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
-        return state.setValue(LOCATION, LocationStateUtil.mirror(state.getValue(LOCATION), mirror == Mirror.LEFT_RIGHT ? Axis.Z : Axis.Y));
+        return mirror == Mirror.NONE ? state : state.setValue(LOCATION, LocationStateUtil.mirror(state.getValue(LOCATION),
+                               mirror == Mirror.LEFT_RIGHT ? Axis.Z : Axis.Y));
     }
 }

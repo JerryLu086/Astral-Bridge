@@ -11,7 +11,7 @@
     "compat.ad_astra.ContraptionMixin",
     "compat.ad_astra.FluidPipeBlockMixin",
     "compat.ad_astra.LaunchPadFix",
-    "compat.ad_astra.LaunchPadItemRequirement",
+    "compat.ad_astra.LaunchPadCreateExtension",
     "compat.ad_astra.SlidingDoorBlockFix",
     "compat.another_furniture.AbstractContraptionEntityMixin",
     "compat.another_furniture.ContraptionMixin",

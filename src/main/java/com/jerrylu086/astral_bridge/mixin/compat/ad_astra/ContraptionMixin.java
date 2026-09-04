@@ -27,6 +27,6 @@ public abstract class ContraptionMixin {
     private float isLaunchPadFlipped(BlockState instance, BlockGetter blockGetter, BlockPos blockPos, Operation<Float> original,
                                      @Local StructureTransform transform, @Local(name = "state") BlockState state) {
         return (state.getBlock() instanceof LaunchPad || state.getBlock() instanceof SlidingDoorBlock)
-                       && transform.rotationAxis != Axis.Y && transform.rotation != Rotation.NONE ? -1 : original.call(instance, blockGetter, blockPos);
+                       && transform.rotationAxis != Axis.Y && (transform.rotation.ordinal() & 1) == 1 ? -1 : original.call(instance, blockGetter, blockPos);
     }
 }
