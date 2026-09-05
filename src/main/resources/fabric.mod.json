@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "${mod_group}.${mod_id}.${mod_main_class}"
+      "${mod_group}.${mod_main_class}"
     ],
     "fabric-datagen": [
-      "${mod_group}.${mod_id}.${mod_main_class}Datagen"
+      "${mod_group}.${mod_main_class}Datagen"
     ]
   },
   "mixins": [

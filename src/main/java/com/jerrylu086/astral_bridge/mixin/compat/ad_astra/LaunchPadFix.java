@@ -18,7 +18,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,6 +36,8 @@ import java.util.function.Consumer;
 @Mixin(LaunchPad.class)
 public abstract class LaunchPadFix extends Block {
     @Shadow @Final
+    public static BooleanProperty WATERLOGGED;
+    @Shadow @Final
     public static EnumProperty<LocationState> LOCATION;
 
     protected LaunchPadFix(Properties properties) {
@@ -45,13 +49,14 @@ public abstract class LaunchPadFix extends Block {
         super.setPlacedBy(level, pos, state, placer, stack);
 
         if (!level.isClientSide && state.getValue(LOCATION) == LocationState.CENTER) {
-            for (int z = 0; z < 3; z++) {
-                for (int x = 0; x < 3; x++) {
-                    BlockPos offset = new BlockPos(x - 1, 0, z - 1);
-                    if (offset.equals(BlockPos.ZERO))
+            for (int x = 0; x < 3 ; x++) {
+                for (int z = 0; z < 3; z++) {
+                    BlockPos offset = pos.offset(x - 1, 0, z - 1);
+                    if (offset.equals(pos))
                         continue;
 
-                    level.setBlock(pos.offset(offset), state.setValue(LOCATION, LocationState.values()[x + z * 3]), 3);
+                    level.setBlock(offset, state.setValue(LOCATION, LocationState.values()[x + z * 3])
+                                                   .setValue(WATERLOGGED, level.getFluidState(offset).getType().equals(Fluids.WATER)), 3);
                 }
             }
         }
@@ -65,13 +70,11 @@ public abstract class LaunchPadFix extends Block {
     }
 
     @WrapOperation(method = "breakPad", at = @At(value = "INVOKE", target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V", ordinal = 0))
-    private static void breakOnlyPad(List<BlockPos> instance, Consumer<BlockPos> consumer, Operation<Void> original, @Local Level world, @Local BlockState state) {
-        Consumer<BlockPos> breakWithCheck = (blockPos) -> {
+    private void breakOnlyPad(List<BlockPos> instance, Consumer<BlockPos> action, Operation<Void> original, @Local Level world) {
+        original.call(instance, (Consumer<BlockPos>) (blockPos) -> {
             if (world.getBlockState(blockPos).getBlock() instanceof LaunchPad)
                 world.destroyBlock(blockPos, false);
-        };
-
-        original.call(instance, breakWithCheck);
+        });
     }
 
     @WrapOperation(method = "<clinit>",
@@ -85,20 +88,22 @@ public abstract class LaunchPadFix extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState state = this.defaultBlockState();
+        BlockState state = this.defaultBlockState().setValue(WATERLOGGED,
+                context.getLevel().getFluidState(context.getClickedPos()).getType().equals(Fluids.WATER));
         BlockPos pos = context.getClickedPos();
 
-        for (int z = 0; z < 3; z++) {
-            for (int x = 0; x < 3; x++) {
-                BlockPos offset = new BlockPos(x - 1, 0, z - 1);
-                if (offset.equals(BlockPos.ZERO))
+        for (int x = 0; x < 3 ; x++) {
+            for (int z = 0; z < 3; z++) {
+                BlockPos offset = pos.offset(x - 1, 0, z - 1);
+                if (offset.equals(pos))
                     continue;
 
-                BlockState neighbor = context.getLevel().getBlockState(pos.offset(offset));
+                BlockState neighbor = context.getLevel().getBlockState(offset);
                 if (!neighbor.getMaterial().isReplaceable())
                     return null;
             }
         }
+
         return state;
     }
 
@@ -110,6 +115,6 @@ public abstract class LaunchPadFix extends Block {
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
         return mirror == Mirror.NONE ? state : state.setValue(LOCATION, LocationStateUtil.mirror(state.getValue(LOCATION),
-                               mirror == Mirror.LEFT_RIGHT ? Axis.Z : Axis.Y));
+                mirror == Mirror.LEFT_RIGHT ? Axis.Z : Axis.Y));
     }
 }

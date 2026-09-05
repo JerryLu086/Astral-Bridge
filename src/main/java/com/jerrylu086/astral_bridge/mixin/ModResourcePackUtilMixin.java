@@ -16,23 +16,24 @@ import java.util.List;
 public abstract class ModResourcePackUtilMixin {
     @Inject(method = "appendModResourcePacks", at = @At("TAIL"))
     private static void onAppend(List<ModResourcePack> packs, PackType type, @Nullable String subPath, CallbackInfo ci) {
-        ModResourcePack target = null;
+        int target = -1;
         for (int i = 0; i < packs.toArray().length; i++) {
             ModResourcePack pack = packs.get(i);
             String id = pack.getFabricModMetadata().getId();
-            if (id.equals("ad_astra")) {
-                if (target != null) {
-                    AstralBridge.LOGGER.info("Found AA pack at: {}, now removing and re-adding AB.", i);
-                    packs.remove(pack);
-                    packs.add(i + 1, pack);
-                } else {
-                    AstralBridge.LOGGER.info("Found AA pack at: {} before AB, now breaking the loop.", i);
+
+            if (id == null)
+                continue;
+
+            switch (id) {
+                case "ad_astra": {
+                    if (target != -1) {
+                        pack = packs.remove(target);
+                        packs.add(i, pack);
+                    }
                 }
-                break;
-            }
-            if (id.equals("astral_bridge")) {
-                AstralBridge.LOGGER.info("Found AB pack at: {}, now targeted.", i);
-                target = pack;
+                case AstralBridge.MOD_ID: {
+                    target = i;
+                }
             }
         }
     }

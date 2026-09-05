@@ -10,6 +10,7 @@ public class LocationStateUtil {
     public static final EnumProperty<LocationState> LOCATION = EnumProperty.create("location", LocationState.class);
 
     public static LocationState rotatePad(LocationState location, Rotation rotation, Axis axis) {
+        // I always wondered why this works despite it being clockwise, until I realized that I also got a flipped Y axis.
         int angle = rotation.ordinal(),
             x = location.ordinal() % 3 - 1,
             z = location.ordinal() / 3 - 1,

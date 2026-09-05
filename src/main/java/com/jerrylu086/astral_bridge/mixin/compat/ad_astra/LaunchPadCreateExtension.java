@@ -39,7 +39,7 @@ public abstract class LaunchPadCreateExtension extends Block implements ISpecial
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
         if (transform.mirror != null) {
-            state = mirror(state, transform.mirror);
+            state.mirror(transform.mirror);
         }
 
         return state.setValue(LOCATION, LocationStateUtil.rotatePad(state.getValue(LOCATION), transform.rotation, transform.rotationAxis));

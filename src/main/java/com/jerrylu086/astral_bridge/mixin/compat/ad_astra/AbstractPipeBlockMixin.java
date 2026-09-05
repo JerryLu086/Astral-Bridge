@@ -3,51 +3,41 @@ package com.jerrylu086.astral_bridge.mixin.compat.ad_astra;
 import com.github.alexnijjar.ad_astra.blocks.pipes.AbstractPipeBlock;
 import com.jerrylu086.astral_bridge.compat.ad_astra.AbstractPipeBlockExtension;
 import com.jerrylu086.astral_bridge.mixin.AstralBridgeMixinPlugin.RequiresModList;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Fluids;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @RequiresModList("ad_astra")
 @Mixin(AbstractPipeBlock.class)
 public abstract class AbstractPipeBlockMixin extends BaseEntityBlock implements AbstractPipeBlockExtension {
-    @Shadow @Final
-    public static BooleanProperty WATERLOGGED;
-
     protected AbstractPipeBlockMixin(Properties properties) {
         super(properties);
     }
 
-    @Inject(method = "setPlacedBy", at = @At("HEAD"), cancellable = true)
-    private void onSetPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack, CallbackInfo ci) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-        ci.cancel();
+    @WrapWithCondition(method = "setPlacedBy",
+                   at = @At(value = "INVOKE",
+                            target = "Lcom/github/alexnijjar/ad_astra/blocks/pipes/AbstractPipeBlock;updateShape(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"))
+    private boolean onSetPlacedBy(AbstractPipeBlock instance, Level world, BlockPos pos, BlockState state) {
+        return false;
     }
 
-    @Inject(method = "getStateForPlacement", at = @At("HEAD"), cancellable = true)
-    private void onGetStateForPlacement(BlockPlaceContext context, CallbackInfoReturnable<BlockState> cir) {
-        cir.setReturnValue(getUpdatedShape(defaultBlockState(), context.getLevel(), context.getClickedPos())
-                           .setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType().equals(Fluids.WATER)));
+    @ModifyReturnValue(method = "getStateForPlacement", at = @At("RETURN"))
+    private BlockState onGetStateForPlacement(BlockState original, @Local BlockPlaceContext context) {
+        return getUpdatedShape(original, context.getLevel(), context.getClickedPos());
     }
 
-    @Inject(method = "updateShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
-            at = @At(value = "INVOKE", target = "Lcom/github/alexnijjar/ad_astra/blocks/pipes/AbstractPipeBlock;updateShape(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)V"),
-            cancellable = true)
-    private void onUpdateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos currentPos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {
-        cir.setReturnValue(getUpdatedShape(state, world, currentPos));
+    @WrapWithCondition(method = "updateShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+            at = @At(value = "INVOKE",
+                     target = "Lcom/github/alexnijjar/ad_astra/blocks/pipes/AbstractPipeBlock;updateShape(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)V"))
+    private boolean onUpdateShape(AbstractPipeBlock instance, Level level, BlockPos blockPos, BlockState state, Direction direction) {
+        return false;
     }
 }
